@@ -12,11 +12,16 @@ app
 
 const movieControllers = require("./src/controllers/movieControllers");
 const userControllers = require("./src/controllers/userControllers");
+const cocktailControllers = require("./src/controllers/cocktailControllers");
 
 app.get("/api/movies", movieControllers.getMovies);
 app.get("/api/movies/:id", movieControllers.getMovieById);
+
 app.get("/api/users", userControllers.getUsers);
 app.get("/api/users/:id", userControllers.getUserById);
+
+app.get("/api/cocktails", cocktailControllers.getCocktails);
+app.get("/api/cocktails/:id", cocktailControllers.getCocktailById);
 
 // node index.js pour lancer le serveur
 // Rien ne se passe car need routes, puis stop and start server
@@ -45,34 +50,5 @@ app.get("/users/:name", welcomeName);
 // L'objet response = server to client
 // Contient x méthodes : res.send, res.json, res.sendFile, res.download, res.redirect, res.render, etc.
 
-const cocktails = [
-  {
-    id: 1,
-    name: "Margarita",
-  },
-  {
-    id: 2,
-    name: "Mojito",
-  },
-  {
-    id: 3,
-    name: "Cuba Libre",
-  },
-];
 
-const getCocktails = (req, res) => {
-  res.status(200).json(cocktails);
-};
 
-const getCocktailById = (req, res) => {
-  const cocktail = cocktails.find((cocktail) => cocktail.id == req.params.id);
-  if (cocktail) {
-    res.status(200).json(cocktail);
-  } else {
-    res.status(404).send("Not found !");
-  }
-};
-
-app.get("/api/cocktails", getCocktails);
-
-app.get("/api/cocktails/:id", getCocktailById);
