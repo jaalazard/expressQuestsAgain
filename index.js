@@ -1,6 +1,7 @@
+require("dotenv").config();
 const express = require("express"); // importer express
 const app = express(); // initialiser express pour accéder à X méthodes : app.get, app.post, app.put, app.delete...
-const port = 5000; // définir le port sur lequel le serveur va écouter
+const port = process.env.APP_PORT; // définir le port sur lequel le serveur va écouter
 app
   .listen(port, () => {
     console.info(`Server is listening on port ${port}`);
@@ -8,6 +9,14 @@ app
   .on("error", (err) => {
     console.error("Error:", err.message);
   }); // Ecouter les connexions entrantes sur le port 5000
+
+const movieControllers = require("./src/controllers/movieControllers");
+const userControllers = require("./src/controllers/userControllers");
+
+app.get("/api/movies", movieControllers.getMovies);
+app.get("/api/movies/:id", movieControllers.getMovieById);
+app.get("/api/users", userControllers.getUsers);
+app.get("/api/users/:id", userControllers.getUserById);
 
 // node index.js pour lancer le serveur
 // Rien ne se passe car need routes, puis stop and start server
@@ -56,13 +65,13 @@ const getCocktails = (req, res) => {
 };
 
 const getCocktailById = (req, res) => {
-    const cocktail = cocktails.find((cocktail) => cocktail.id == req.params.id);
+  const cocktail = cocktails.find((cocktail) => cocktail.id == req.params.id);
   if (cocktail) {
     res.status(200).json(cocktail);
   } else {
     res.status(404).send("Not found !");
   }
-}
+};
 
 app.get("/api/cocktails", getCocktails);
 
